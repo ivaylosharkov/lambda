@@ -1,0 +1,1 @@
+{"lastDeploymentHandler":"example.Hello","lastInvokeHandler":"example.Hello","handlerMetadata":{"example.Hello":{"deployment":{"regionId":"eu-west-1","awsLambdaFunctionName":"Hello2","awsIamRoleName":"isharkov_test_lambda","awsS3BucketName":"isharkov-test-lambda-s3","memory":0,"timeout":0},"invoke":{"invokeInput":"\"AWS Lambda\"","showLiveLog":true}}}}

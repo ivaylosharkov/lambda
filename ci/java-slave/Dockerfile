@@ -9,6 +9,7 @@ RUN apt-get -qq update \
       openssh-server \
       nano \
       wget \
+      git \
       zip \
       unzip \
       python-pip \

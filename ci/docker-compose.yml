@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+   jenkins:
+      image: jenkins
+      container_name: jenkins
+      mem_limit: 1036m
+      environment:
+         - JAVA_OPTS=-Dhudson.model.ParametersAction.safeParameters=SVC_NAME,TAG_ID,CLUSTER_NAME,TARGET_HOST -Dhudson.model.DirectoryBrowserSupport.CSP="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+      entrypoint: /bin/tini -- /usr/local/bin/jenkins.sh  --sessionTimeout=10080
+      ports:
+#      Port left for debugging
+         - "8000:8080"
+         - "50000:50000"
+      restart: always
+      logging:
+         driver: json-file
+         options:
+            max-size: "10m"
+            max-file: "4"
+      volumes:
+         - /opt/sfly/jenkins:/var/jenkins_home
+
+   java-slave0:
+      container_name: java-slave0
+      build: java-slave/.
+      logging:
+         driver: json-file
+         options:
+            max-size: "5m"
+            max-file: "4"
+      ports:
+         - "10020:22"
+      restart: always
+      privileged: true
+      volumes:
+         - /var/run/docker.sock:/var/run/docker.sock
+         - /usr/bin/docker:/usr/bin/docker
+         - /opt/sfly/jenkins-slave/java-slave/files/ssh:/home/jenkins/.ssh
+      depends_on:
+         - docker-ui
+
+   docker-ui:
+      image: portainer/portainer
+      container_name: docker-ui
+      mem_limit: 64m
+      logging:
+         driver: json-file
+         options:
+            max-size: "50m"
+            max-file: "4"
+      ports:
+         - "9000:9000"
+      privileged: true
+      restart: always
+      volumes:
+         - /var/run/docker.sock:/var/run/docker.sock
+         - /usr/local/bin/docker:/usr/bin/docker

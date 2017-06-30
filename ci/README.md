@@ -8,6 +8,7 @@ chown -R 1000:1000 /opt/sfly
 
 ## Run Jenkins Infrastrucutre
 docker-compose up -d
+checked java-slave0 is attached
 
 ## Login instructions
 ### Jenkins
